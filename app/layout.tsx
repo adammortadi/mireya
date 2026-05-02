@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import { Montserrat, Cormorant_Garamond, Caveat } from "next/font/google";
 import "./globals.css";
