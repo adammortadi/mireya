@@ -9,10 +9,13 @@ const client = createClient({
 async function main() {
   console.log('Start seeding directly to Turso...')
 
-  // Ensure tables exist
+  // Ensure all tables exist
+  await client.execute("CREATE TABLE IF NOT EXISTS User (id TEXT PRIMARY KEY, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, name TEXT, role TEXT NOT NULL DEFAULT 'CUSTOMER', createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)");
   await client.execute("CREATE TABLE IF NOT EXISTS Category (id TEXT PRIMARY KEY, name TEXT NOT NULL, slug TEXT UNIQUE NOT NULL, description TEXT, imageUrl TEXT)");
   await client.execute("CREATE TABLE IF NOT EXISTS Product (id TEXT PRIMARY KEY, name TEXT NOT NULL, slug TEXT UNIQUE NOT NULL, description TEXT NOT NULL, price REAL NOT NULL, stock INTEGER NOT NULL DEFAULT 0, isBestSeller INTEGER NOT NULL DEFAULT 0, isPersonalizable INTEGER NOT NULL DEFAULT 0, emoji TEXT, handwrittenTitle TEXT, bgColor TEXT, images TEXT NOT NULL, categoryId TEXT NOT NULL, createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)");
-  await client.execute("CREATE TABLE IF NOT EXISTS User (id TEXT PRIMARY KEY, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, name TEXT, role TEXT NOT NULL DEFAULT 'CUSTOMER', createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+  await client.execute("CREATE TABLE IF NOT EXISTS [Order] (id TEXT PRIMARY KEY, userId TEXT, status TEXT NOT NULL DEFAULT 'PENDING', total REAL NOT NULL, customer TEXT NOT NULL, createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+  await client.execute("CREATE TABLE IF NOT EXISTS OrderItem (id TEXT PRIMARY KEY, orderId TEXT NOT NULL, productId TEXT NOT NULL, quantity INTEGER NOT NULL, price REAL NOT NULL)");
+  await client.execute("CREATE TABLE IF NOT EXISTS SiteContent (id TEXT PRIMARY KEY, [key] TEXT UNIQUE NOT NULL, value TEXT NOT NULL, updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)");
 
   for (const c of MOCK_CATEGORIES) {
     await client.execute({
