@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getCatalogProductBySlug } from "@/lib/db/catalog";
 import { notFound } from "next/navigation";
 import Link from "next/link";

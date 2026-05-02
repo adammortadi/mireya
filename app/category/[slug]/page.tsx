@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getCatalogCategoryBySlug, getCatalogProductsByCategory } from "@/lib/db/catalog";
 import ProductCard from "@/components/storefront/ProductCard";
 import { notFound } from "next/navigation";
