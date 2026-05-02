@@ -11,12 +11,10 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 // Use Turso (LibSQL) for both local and production
-const client = createClient({
+const adapter = new PrismaLibSql({
   url: process.env.TURSO_DATABASE_URL || "file:dev.db",
   authToken: process.env.TURSO_AUTH_TOKEN,
 });
-
-const adapter = new PrismaLibSql(client);
 
 export const prisma =
   globalForPrisma.prisma ??
