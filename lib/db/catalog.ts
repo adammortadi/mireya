@@ -1,7 +1,6 @@
 import "server-only";
 
 import { prisma } from "@/lib/db/prisma";
-import { unstable_cache } from "next/cache";
 import {
   MOCK_CATEGORIES,
   MOCK_PRODUCTS,
@@ -67,23 +66,15 @@ function toCategory(category: {
   };
 }
 
-export const getCatalogProducts = unstable_cache(
-  async () => {
-    const products = await prisma.product.findMany({ orderBy: { createdAt: "desc" } });
-    return products.map(toProduct);
-  },
-  ["products"],
-  { tags: ["products"], revalidate: 3600 }
-);
+export async function getCatalogProducts() {
+  const products = await prisma.product.findMany({ orderBy: { createdAt: "desc" } });
+  return products.map(toProduct);
+}
 
-export const getCatalogCategories = unstable_cache(
-  async () => {
-    const categories = await prisma.category.findMany({ orderBy: { name: "asc" } });
-    return categories.map(toCategory);
-  },
-  ["categories"],
-  { tags: ["categories"], revalidate: 3600 }
-);
+export async function getCatalogCategories() {
+  const categories = await prisma.category.findMany({ orderBy: { name: "asc" } });
+  return categories.map(toCategory);
+}
 
 export async function getCatalogProductBySlug(slug: string) {
   const product = await prisma.product.findUnique({ where: { slug } });
@@ -104,11 +95,7 @@ export async function getCatalogProductsByCategory(categoryId: string) {
   return products.map(toProduct);
 }
 
-export const getSiteContent = unstable_cache(
-  async () => {
-    const content = await prisma.siteContent.findMany();
-    return Object.fromEntries(content.map((item) => [item.key, item.value]));
-  },
-  ["site-content"],
-  { tags: ["site-content"], revalidate: 3600 }
-);
+export async function getSiteContent() {
+  const content = await prisma.siteContent.findMany();
+  return Object.fromEntries(content.map((item) => [item.key, item.value]));
+}
