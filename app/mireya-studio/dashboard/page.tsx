@@ -9,6 +9,7 @@ import {
   updateCategory,
   updateProduct,
 } from "./actions";
+import {
   Boxes,
   ImagePlus,
   LogOut,
