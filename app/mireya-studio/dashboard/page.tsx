@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import ImageUpload from "./ImageUpload";
 import { DeleteButton } from "./DeleteButton";
+import AddProductForm from "./AddProductForm";
 
 function parseImages(images: string) {
   try {
@@ -129,45 +130,7 @@ export default async function MireyaDashboard() {
 
           <section id="add-product" className="rounded-3xl bg-white p-6 sm:p-10 shadow-sm max-w-3xl">
             <h2 className="mb-8 font-serif text-3xl font-bold uppercase tracking-wider text-[#2d2426]">Nouveau Produit</h2>
-            <form action={createProduct} className="space-y-6" encType="multipart/form-data">
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">Nom du produit</label>
-                <input name="name" required className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-medium text-stone-900 outline-none transition focus:border-[#c46070] focus:bg-white focus:ring-4 focus:ring-[#fde4e4]" />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">Prix (MAD)</label>
-                  <input name="price" required type="number" step="0.01" className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-medium text-stone-900 outline-none transition focus:border-[#c46070] focus:bg-white focus:ring-4 focus:ring-[#fde4e4]" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">Stock Initial</label>
-                  <input name="stock" required type="number" defaultValue="1" className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-medium text-stone-900 outline-none transition focus:border-[#c46070] focus:bg-white focus:ring-4 focus:ring-[#fde4e4]" />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">Catégorie</label>
-                <select name="categoryId" required className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-medium text-stone-900 outline-none transition focus:border-[#c46070] focus:bg-white focus:ring-4 focus:ring-[#fde4e4]">
-                  <option value="">Sélectionner une catégorie</option>
-                  {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">Description</label>
-                <textarea name="description" required className="min-h-[120px] w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-medium text-stone-900 outline-none transition focus:border-[#c46070] focus:bg-white focus:ring-4 focus:ring-[#fde4e4]" />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">Photos du produit</label>
-                <ImageUpload />
-              </div>
-
-              <button type="submit" className="w-full rounded-xl bg-[#2d2426] px-5 py-4 text-sm font-bold tracking-widest text-white uppercase transition hover:bg-[#c46070]">
-                Enregistrer le produit
-              </button>
-            </form>
+            <AddProductForm categories={categories} createProductAction={createProduct} />
           </section>
 
           <section id="categories" className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
