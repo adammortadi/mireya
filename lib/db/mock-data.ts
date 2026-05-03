@@ -31,28 +31,28 @@ export const MOCK_CATEGORIES: Category[] = [
     name: "Pouches",
     slug: "pouches",
     description: "Handmade flat and quilted pouches.",
-    imageUrl: "https://images.pexels.com/photos/34578274/pexels-photo-34578274.jpeg?auto=compress&cs=tinysrgb&w=900",
+    imageUrl: "/uploads/categories/cat1.jpeg",
   },
   {
     id: "cat_2",
     name: "Tote Bags",
     slug: "tote-bags",
     description: "Cute fabric bags for your essentials.",
-    imageUrl: "https://images.unsplash.com/photo-1768033976342-6dea958334d2?auto=format&fit=crop&q=80&w=900",
+    imageUrl: "/uploads/categories/cat2.jpeg",
   },
   {
     id: "cat_3",
     name: "Personalized",
     slug: "personalized",
     description: "Add your name with custom embroidery.",
-    imageUrl: "https://images.unsplash.com/photo-1591375275714-8b2b55b0bf0d?auto=format&fit=crop&q=80&w=900",
+    imageUrl: "/uploads/categories/cat3.jpeg",
   },
   {
     id: "cat_4",
     name: "Accessories",
     slug: "accessories",
     description: "Fabric charms and tiny everyday pieces.",
-    imageUrl: "https://images.pexels.com/photos/7171399/pexels-photo-7171399.jpeg?auto=compress&cs=tinysrgb&w=900",
+    imageUrl: "/uploads/categories/cat4.jpeg",
   },
 ];
 
