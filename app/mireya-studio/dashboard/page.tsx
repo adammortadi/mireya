@@ -8,12 +8,8 @@ import {
   deleteProduct,
   updateCategory,
   updateProduct,
-  updateSiteContent,
 } from "./actions";
-import {
-  BarChart3,
   Boxes,
-  Edit3,
   ImagePlus,
   LogOut,
   Package,
@@ -71,7 +67,6 @@ export default async function MireyaDashboard() {
               ["Inventory", Package, "inventory"],
               ["Add Product", Plus, "add-product"],
               ["Categories", Tags, "categories"],
-              ["Homepage", Edit3, "homepage"],
             ].map(([label, Icon, id]) => (
               <a key={String(id)} href={`#${String(id)}`} className="flex items-center gap-4 rounded-xl border border-transparent px-4 py-3.5 uppercase tracking-[0.2em] text-[10px] font-black transition hover:border-white/10 hover:bg-white/5 hover:text-white">
                 <Icon className="h-4 w-4" />
@@ -222,16 +217,7 @@ export default async function MireyaDashboard() {
 
 
 
-          <section id="homepage" className="rounded-2xl bg-white p-5 shadow-sm">
-            <h2 className="mb-4 font-serif text-3xl text-[#2d2426]">Homepage Content</h2>
-            <form action={updateSiteContent} className="grid gap-3 md:grid-cols-2">
-              <input name="bannerTitle" defaultValue={copy.bannerTitle || "Spring Collection"} placeholder="Banner title" className="rounded-lg border border-stone-200 px-3 py-2 text-sm" />
-              <input name="announcement" defaultValue={copy.announcement || "handmade with love in Morocco"} placeholder="Announcement" className="rounded-lg border border-stone-200 px-3 py-2 text-sm" />
-              <textarea name="bannerSubtitle" defaultValue={copy.bannerSubtitle || "Create your dream pouch with unlimited options."} placeholder="Banner subtitle" className="rounded-lg border border-stone-200 px-3 py-2 text-sm" />
-              <textarea name="homeIntro" defaultValue={copy.homeIntro || "Handmade with love in Morocco."} placeholder="Homepage text" className="rounded-lg border border-stone-200 px-3 py-2 text-sm" />
-              <button className="rounded-lg bg-[#2d2426] px-4 py-3 text-sm font-bold text-white md:col-span-2">Save homepage text</button>
-            </form>
-          </section>
+
         </section>
       </div>
     </main>
