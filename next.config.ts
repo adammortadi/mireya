@@ -6,6 +6,13 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 2592000, // 30 days
     deviceSizes: [640, 1080, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'images.pexels.com' },
+      { protocol: 'https', hostname: '*.pexels.com' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: '*.unsplash.com' },
+      { protocol: 'https', hostname: '**.vercel.app' },
+    ],
   },
   experimental: {
     serverActions: {
