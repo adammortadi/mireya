@@ -19,8 +19,7 @@ async function main() {
 
   for (const c of MOCK_CATEGORIES) {
     await client.execute({
-      sql: `INSERT INTO Category (id, name, slug, description, imageUrl) VALUES (?, ?, ?, ?, ?) 
-            ON CONFLICT(slug) DO UPDATE SET name=excluded.name, description=excluded.description, imageUrl=excluded.imageUrl`,
+      sql: `INSERT OR REPLACE INTO Category (id, name, slug, description, imageUrl) VALUES (?, ?, ?, ?, ?)`,
       args: [c.id, c.name, c.slug, c.description || null, c.imageUrl || null]
     });
     console.log(`Created/updated category: ${c.name}`)
