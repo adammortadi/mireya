@@ -28,15 +28,11 @@ async function imagesValue(formData: FormData, field = "image") {
   const files = formData.getAll(field).filter((f) => f instanceof File && f.size > 0) as File[];
   if (files.length === 0) return [];
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads", "products");
-  await mkdir(uploadDir, { recursive: true });
-
   const urls = await Promise.all(
     files.map(async (file) => {
       const bytes = Buffer.from(await file.arrayBuffer());
-      const safeName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
-      await writeFile(path.join(uploadDir, safeName), bytes);
-      return `/uploads/products/${safeName}`;
+      const base64 = bytes.toString("base64");
+      return `data:${file.type || 'image/jpeg'};base64,${base64}`;
     })
   );
 
@@ -51,11 +47,8 @@ async function imageValue(formData: FormData, field = "image") {
   if (!(file instanceof File) || file.size === 0) return "";
 
   const bytes = Buffer.from(await file.arrayBuffer());
-  const safeName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads", "products");
-  await mkdir(uploadDir, { recursive: true });
-  await writeFile(path.join(uploadDir, safeName), bytes);
-  return `/uploads/products/${safeName}`;
+  const base64 = bytes.toString("base64");
+  return `data:${file.type || 'image/jpeg'};base64,${base64}`;
 }
 
 function refreshStudio() {
