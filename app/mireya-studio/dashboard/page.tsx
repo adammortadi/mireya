@@ -5,10 +5,8 @@ import {
   createCategory,
   createProduct,
   deleteCategory,
-  deleteOrder,
   deleteProduct,
   updateCategory,
-  updateOrderStatus,
   updateProduct,
   updateSiteContent,
 } from "./actions";
@@ -20,7 +18,6 @@ import {
   LogOut,
   Package,
   Plus,
-  ShoppingBag,
   Tags,
   Trash2,
 } from "lucide-react";
@@ -71,7 +68,6 @@ export default async function MireyaDashboard() {
           </div>
           <nav className="mt-8 hidden space-y-1 text-sm font-semibold text-white/60 lg:block">
             {[
-              ["Orders", ShoppingBag, "orders"],
               ["Inventory", Package, "inventory"],
               ["Add Product", Plus, "add-product"],
               ["Categories", Tags, "categories"],
@@ -99,62 +95,6 @@ export default async function MireyaDashboard() {
             </a>
           </header>
 
-          <section id="orders" className="rounded-3xl bg-white p-6 sm:p-8 shadow-sm">
-            <h2 className="mb-8 font-serif text-3xl font-bold uppercase tracking-wider text-[#2d2426]">Gestion Commandes</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[760px] text-left text-sm">
-                <thead className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 border-b border-stone-100">
-                  <tr>
-                    <th className="py-4 px-2">Client</th>
-                    <th className="px-2">Articles</th>
-                    <th className="px-2">Total</th>
-                    <th className="px-2">Statut</th>
-                    <th className="px-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-stone-50">
-                  {orders.map((order) => {
-                    const customer = JSON.parse(order.customer || "{}");
-                    return (
-                      <tr key={order.id} className="transition hover:bg-stone-50/50">
-                        <td className="py-4 px-2">
-                          <p className="font-bold text-stone-900">{customer.name || customer.email || "Guest customer"}</p>
-                          <p className="text-[10px] font-mono text-[#c46070] mt-1">{order.id.slice(-8).toUpperCase()}</p>
-                        </td>
-                        <td className="px-2 text-stone-600 font-medium">{order.items.length} items</td>
-                        <td className="px-2 font-bold text-stone-900">{money(order.total)}</td>
-                        <td className="px-2">
-                          <span className={`inline-flex px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${
-                            order.status === 'DELIVERED' ? 'bg-green-50 text-green-700' :
-                            order.status === 'SHIPPED' ? 'bg-blue-50 text-blue-700' :
-                            'bg-[#fde4e4] text-[#c46070]'
-                          }`}>
-                            {order.status}
-                          </span>
-                        </td>
-                        <td className="px-2">
-                          <div className="flex gap-2">
-                            <form action={updateOrderStatus} className="flex gap-2">
-                              <input type="hidden" name="id" value={order.id} />
-                              <select name="status" defaultValue={order.status} className="rounded-lg border border-stone-200 px-3 py-2 text-xs font-medium text-stone-600 outline-none focus:border-[#c46070]">
-                                {["PENDING", "PROCESSING", "SHIPPED", "DELIVERED"].map((status) => <option key={status}>{status}</option>)}
-                              </select>
-                              <button className="rounded-lg bg-stone-100 px-3 py-2 text-xs font-bold text-stone-700 hover:bg-stone-200 transition">Update</button>
-                            </form>
-                            <form>
-                              <input type="hidden" name="id" value={order.id} />
-                              <DeleteButton formAction={deleteOrder} itemType="order" />
-                            </form>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              {orders.length === 0 && <p className="py-12 text-center text-sm font-medium text-stone-500">Aucune commande trouvée.</p>}
-            </div>
-          </section>
 
           <section id="inventory" className="space-y-6">
             <h2 className="font-serif text-3xl font-bold uppercase tracking-wider text-[#2d2426]">Inventaire</h2>
