@@ -18,6 +18,7 @@ import {
   Tags,
   Trash2,
 } from "lucide-react";
+import Link from "next/link";
 import ImageUpload from "./ImageUpload";
 import { DeleteButton } from "./DeleteButton";
 import AddProductForm from "./AddProductForm";
@@ -39,7 +40,7 @@ export default async function MireyaDashboard() {
   const session = await requireAdmin();
   const [products, categories, orders, content] = await Promise.all([
     prisma.product.findMany({ include: { category: true }, orderBy: { createdAt: "desc" } }),
-    prisma.category.findMany({ include: { products: true }, orderBy: { name: "asc" } }),
+    prisma.category.findMany({ orderBy: { name: "asc" } }),
     prisma.order.findMany({ include: { items: true }, orderBy: { createdAt: "desc" } }),
     prisma.siteContent.findMany(),
   ]);
@@ -87,9 +88,9 @@ export default async function MireyaDashboard() {
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#c46070]">Secure dashboard</p>
               <h1 className="mt-2 font-serif text-4xl text-[#2d2426]">Welcome back, {session.name}</h1>
             </div>
-            <a href="/" className="rounded-xl border border-stone-200 px-4 py-2 text-sm font-bold text-stone-600 transition hover:border-[#c46070] hover:text-[#c46070]">
+            <Link href="/" className="rounded-xl border border-stone-200 px-4 py-2 text-sm font-bold text-stone-600 transition hover:border-[#c46070] hover:text-[#c46070]">
               View storefront
-            </a>
+            </Link>
           </header>
 
 

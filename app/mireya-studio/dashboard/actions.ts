@@ -2,19 +2,15 @@
 
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
+import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
+import sharp from "sharp";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db/prisma";
 
 function text(formData: FormData, key: string, maxLength = 1000) {
   const val = String(formData.get(key) || "").trim();
   return val.slice(0, maxLength); // Prevent overflow/buffer attacks
-}
-
-function validateId(id: string) {
-  if (!id || typeof id !== "string" || id.length > 100) {
-    throw new Error("Identifiant invalide.");
-  }
 }
 
 function slugify(value: string) {
@@ -24,19 +20,32 @@ function slugify(value: string) {
     .replace(/(^-|-$)/g, "");
 }
 
+async function storedImageUrl(file: File, folder: "products" | "categories") {
+  const input = Buffer.from(await file.arrayBuffer());
+  const optimized = await sharp(input)
+    .rotate()
+    .resize({ width: 1600, height: 1600, fit: "inside", withoutEnlargement: true })
+    .webp({ quality: 78 })
+    .toBuffer();
+
+  const fileName = `${Date.now()}-${randomUUID()}.webp`;
+  const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
+
+  try {
+    await mkdir(uploadDir, { recursive: true });
+    await writeFile(path.join(uploadDir, fileName), optimized);
+    return `/uploads/${folder}/${fileName}`;
+  } catch (error) {
+    console.error("[ImageUpload]", error);
+    return `data:image/webp;base64,${optimized.toString("base64")}`;
+  }
+}
+
 async function imagesValue(formData: FormData, field = "image") {
   const files = formData.getAll(field).filter((f) => f instanceof File && f.size > 0) as File[];
   if (files.length === 0) return [];
 
-  const urls = await Promise.all(
-    files.map(async (file) => {
-      const bytes = Buffer.from(await file.arrayBuffer());
-      const base64 = bytes.toString("base64");
-      return `data:${file.type || 'image/jpeg'};base64,${base64}`;
-    })
-  );
-
-  return urls;
+  return Promise.all(files.map((file) => storedImageUrl(file, "products")));
 }
 
 async function imageValue(formData: FormData, field = "image") {
@@ -46,9 +55,7 @@ async function imageValue(formData: FormData, field = "image") {
   const file = formData.get(field);
   if (!(file instanceof File) || file.size === 0) return "";
 
-  const bytes = Buffer.from(await file.arrayBuffer());
-  const base64 = bytes.toString("base64");
-  return `data:${file.type || 'image/jpeg'};base64,${base64}`;
+  return storedImageUrl(file, "categories");
 }
 
 function refreshStudio() {

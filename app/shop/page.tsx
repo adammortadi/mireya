@@ -2,6 +2,8 @@ import { getCatalogProducts } from "@/lib/db/catalog";
 import ProductCard from "@/components/storefront/ProductCard";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Ready for Delivery | Mireya",
   description: "Browse all handmade pouches and bags by Mireya, made with love in Morocco.",

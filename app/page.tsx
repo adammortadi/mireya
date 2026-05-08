@@ -2,19 +2,12 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import Image from "next/image";
-import { getCatalogCategories, getCatalogProducts, getSiteContent } from "@/lib/db/catalog";
-import { MIREYA_HERO_IMAGE } from "@/lib/db/mock-data";
-import ProductCard from "@/components/storefront/ProductCard";
-import Newsletter from "@/components/storefront/Newsletter";
+import { getCatalogCategories } from "@/lib/db/catalog";
 
 
 
 export default async function Home() {
-  const [categories, products, content] = await Promise.all([
-    getCatalogCategories(),
-    getCatalogProducts(),
-    getSiteContent(),
-  ]);
+  const categories = await getCatalogCategories();
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
