@@ -4,6 +4,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { getCatalogCategories } from "@/lib/db/catalog";
 
+function CategoryImage({ src, alt }: { src: string; alt: string }) {
+  if (!src || src.startsWith("data:")) {
+    return (
+      <img
+        src={src || "/favicon.ico"}
+        alt={alt}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+        className="transition-transform duration-1000 ease-out group-hover:scale-110"
+      />
+    );
+  }
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+      sizes="(max-width: 768px) 50vw, 25vw"
+    />
+  );
+}
+
 
 
 export default async function Home() {
@@ -45,13 +67,7 @@ export default async function Home() {
                 className="group flex flex-col items-center gap-5 text-center"
               >
                 <div className="relative w-full overflow-hidden rounded-[28px] bg-[#fde4e4]/10 shadow-sm transition-all duration-500 hover:shadow-md md:rounded-[32px]" style={{ aspectRatio: "1 / 1.1" }}>
-                  <Image
-                    src={category.imageUrl}
-                    alt={category.name}
-                    fill
-                    className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                  />
+                  <CategoryImage src={category.imageUrl} alt={category.name} />
                 </div>
                 <span className="text-[13px] font-bold uppercase tracking-widest text-[#888] transition-colors group-hover:text-[#e07a8a] md:text-[14px]">
                   {category.name}

@@ -8,6 +8,37 @@ interface ProductGalleryProps {
   name: string;
 }
 
+// Handles both data: URIs and regular URLs
+function GalleryImage({ src, alt, fill, sizes, className, priority }: {
+  src: string;
+  alt: string;
+  fill?: boolean;
+  sizes?: string;
+  className?: string;
+  priority?: boolean;
+}) {
+  if (!src || src.startsWith("data:")) {
+    return (
+      <img
+        src={src || "/favicon.ico"}
+        alt={alt}
+        className={className}
+        style={fill ? { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" } : undefined}
+      />
+    );
+  }
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill={fill}
+      sizes={sizes}
+      className={className}
+      priority={priority}
+    />
+  );
+}
+
 export default function ProductGallery({ images, name }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -15,7 +46,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
     <div className="flex flex-col gap-4">
       {/* Main Image */}
       <div className="aspect-[4/5] bg-[#FFF0F5] rounded-[24px] overflow-hidden relative">
-        <Image
+        <GalleryImage
           src={images[activeIndex]}
           alt={name}
           fill
@@ -36,7 +67,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
                 activeIndex === i ? "border-[#e07a8a]" : "border-transparent opacity-70 hover:opacity-100"
               }`}
             >
-              <Image src={img} alt="" fill className="object-contain p-1" sizes="100px" />
+              <GalleryImage src={img} alt="" fill className="object-contain p-1" sizes="100px" />
             </button>
           ))}
         </div>
