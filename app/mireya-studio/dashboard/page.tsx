@@ -23,6 +23,7 @@ import ImageUpload from "./ImageUpload";
 import { DeleteButton } from "./DeleteButton";
 import AddProductForm from "./AddProductForm";
 import AddCategoryForm from "./AddCategoryForm";
+import CategoryImageUpload from "./CategoryImageUpload";
 
 function parseImages(images: string) {
   try {
@@ -148,7 +149,11 @@ export default async function MireyaDashboard() {
                   {/* Primary Row */}
                   <div className="flex flex-wrap items-center gap-4">
                     {category.imageUrl && (
-                      <img src={category.imageUrl} alt={category.name} className="h-14 w-14 rounded-lg bg-stone-50 object-cover shadow-sm" />
+                      <img
+                        src={category.imageUrl}
+                        alt={category.name}
+                        className="h-14 w-14 rounded-lg bg-stone-50 object-cover shadow-sm flex-shrink-0"
+                      />
                     )}
                     
                     <div className="flex-1 min-w-[200px]">
@@ -168,7 +173,14 @@ export default async function MireyaDashboard() {
                   {/* Secondary Row (Advanced Settings) */}
                   <div className="grid gap-4 rounded-xl bg-[#fefdfc] p-4 lg:grid-cols-2 border border-stone-100">
                     <textarea name="description" defaultValue={category.description || ""} placeholder="Description" className="min-h-[80px] w-full rounded-lg border border-stone-200 px-3 py-2 text-sm outline-none focus:border-[#c46070]" />
-                    <input name="imageUrl" defaultValue={category.imageUrl || ""} placeholder="Image URL (optional)" className="w-full rounded-lg border border-stone-200 px-3 py-2 text-sm outline-none focus:border-[#c46070]" />
+                    <div className="space-y-1">
+                      <p className="text-[9px] font-bold uppercase tracking-wider text-stone-400">Changer l'image</p>
+                      <CategoryImageUpload name="image" />
+                      {/* Keep existing imageUrl only if no new file uploaded */}
+                      {category.imageUrl && !category.imageUrl.startsWith("data:") && (
+                        <input type="hidden" name="imageUrl" value={category.imageUrl} />
+                      )}
+                    </div>
                   </div>
                 </form>
               ))}
