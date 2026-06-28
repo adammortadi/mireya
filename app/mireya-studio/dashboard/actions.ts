@@ -67,9 +67,9 @@ function refreshStudio() {
 export async function createCategory(formData: FormData) {
   await requireAdmin();
   const name = text(formData, "name");
-  if (!name) return;
+  if (!name) throw new Error("Le nom de la catégorie est requis.");
 
-  await prisma.category.create({
+  const category = await prisma.category.create({
     data: {
       name,
       slug: text(formData, "slug") || slugify(name),
@@ -78,6 +78,7 @@ export async function createCategory(formData: FormData) {
     },
   });
   refreshStudio();
+  return category;
 }
 
 export async function updateCategory(formData: FormData) {

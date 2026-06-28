@@ -22,6 +22,7 @@ import Link from "next/link";
 import ImageUpload from "./ImageUpload";
 import { DeleteButton } from "./DeleteButton";
 import AddProductForm from "./AddProductForm";
+import AddCategoryForm from "./AddCategoryForm";
 
 function parseImages(images: string) {
   try {
@@ -131,19 +132,13 @@ export default async function MireyaDashboard() {
 
           <section id="add-product" className="rounded-3xl bg-white p-6 sm:p-10 shadow-sm max-w-3xl">
             <h2 className="mb-8 font-serif text-3xl font-bold uppercase tracking-wider text-[#2d2426]">Nouveau Produit</h2>
-            <AddProductForm categories={categories} createProductAction={createProduct} />
+            <AddProductForm categories={categories} createProductAction={createProduct} createCategoryAction={createCategory} />
           </section>
 
           <section id="categories" className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-            <div className="rounded-2xl bg-white p-5 shadow-sm">
-              <h2 className="mb-4 font-serif text-3xl text-[#2d2426]">Categories</h2>
-              <form action={createCategory} className="space-y-3" encType="multipart/form-data">
-                <input name="name" required placeholder="Name" className="w-full rounded-lg border border-stone-200 px-3 py-2 text-sm" />
-                <input name="slug" placeholder="slug" className="w-full rounded-lg border border-stone-200 px-3 py-2 text-sm" />
-                <textarea name="description" placeholder="Description" className="w-full rounded-lg border border-stone-200 px-3 py-2 text-sm" />
-                <input name="imageUrl" placeholder="Image URL" className="w-full rounded-lg border border-stone-200 px-3 py-2 text-sm" />
-                <button className="w-full rounded-lg bg-[#2d2426] px-4 py-2 text-sm font-bold text-white">Add Category</button>
-              </form>
+            <div className="rounded-2xl bg-white p-6 shadow-sm">
+              <h2 className="mb-6 font-serif text-3xl text-[#2d2426] font-bold uppercase tracking-wider">Nouvelle Catégorie</h2>
+              <AddCategoryForm createCategoryAction={createCategory} />
             </div>
             <div className="grid gap-4">
               {categories.map((category) => (
