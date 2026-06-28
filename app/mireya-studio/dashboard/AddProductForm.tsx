@@ -100,9 +100,12 @@ export default function AddProductForm({
     }
   }
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setStatus("loading");
     try {
+      // Build FormData from the form element directly to capture file inputs reliably
+      const formData = new FormData(formRef.current!);
       await createProductAction(formData);
       setStatus("success");
       formRef.current?.reset();
@@ -129,7 +132,7 @@ export default function AddProductForm({
         </div>
       )}
 
-      <form ref={formRef} action={handleSubmit} className="space-y-6" encType="multipart/form-data">
+      <form ref={formRef} onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
         <div className="space-y-2">
           <label className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">Nom du produit</label>
           <input name="name" required disabled={status === "loading"} className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-medium text-stone-900 outline-none transition focus:border-[#c46070] focus:bg-white focus:ring-4 focus:ring-[#fde4e4] disabled:opacity-50" />

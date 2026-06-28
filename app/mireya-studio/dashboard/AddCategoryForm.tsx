@@ -29,9 +29,12 @@ export default function AddCategoryForm({ createCategoryAction }: AddCategoryFor
     );
   };
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setStatus("loading");
     try {
+      // Build FormData directly from the form element so file inputs are included
+      const formData = new FormData(formRef.current!);
       await createCategoryAction(formData);
       setStatus("success");
       formRef.current?.reset();
@@ -48,7 +51,7 @@ export default function AddCategoryForm({ createCategoryAction }: AddCategoryFor
   }
 
   return (
-    <form ref={formRef} action={handleSubmit} className="space-y-6" encType="multipart/form-data">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
       {status === "success" && (
         <div className="rounded-xl bg-green-50 p-4 text-sm font-bold text-green-700 border border-green-200">
           🎉 La catégorie a été créée avec succès !
